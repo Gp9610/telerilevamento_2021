@@ -102,3 +102,55 @@ plot(p224r63_2011$B3_sre, col=clr)
 
 clnear <-colorRampPalette(c(" dark red"," orange","yellow")) (100)
 plot(p224r63_2011$B4_sre, col=clnear)
+
+#Visualizing data by RGB (26/03/2021)
+library(raster) 
+setwd("C:/lab/") 
+p224r63_2011 <- brick("p224r63_2011_masked.grd")
+p224r63_2011
+#Bande Landsat
+#B1= Blu
+#B2= Verde
+#B3= Rosso
+#B4= Vicino infrarosso
+#B5= Infrarosso medio
+#B6= Infrarosso Termico
+#B7= Infrarosso medio
+plotRGB(p224r63_2011,r=3,g=2,b=1,stretch="Lin")
+#plotRGB serve quando abbiamo un oggetto raster con più bande che attraverso il sistema RGB va ad utilizzarle
+#l' argomento stretc prende i valori delle singole bande e le "tira" per non far risultare uno schiacciamento di un singolo colore
+# Lin vuol dire lineare
+plotRGB(p224r63_2011,r=4,g=3,b=2,stretch="Lin")
+#monto l'infrarosso vicino nella componente red del sistema RGB la vegetazione nell'infrarosso ha un'altissima riflettanza quindi assume una colorazione rossa
+plotRGB(p224r63_2011,r=3,g=4,b=2,stretch="Lin")
+plotRGB(p224r63_2011,r=3,g=2,b=4,stretch="Lin")
+#esercizio
+par(mfrow=c(2,2))
+plotRGB(p224r63_2011,r=3,g=2,b=1,stretch="Lin")
+plotRGB(p224r63_2011,r=4,g=3,b=2,stretch="Lin")
+plotRGB(p224r63_2011,r=3,g=4,b=2,stretch="Lin")
+plotRGB(p224r63_2011,r=3,g=2,b=4,stretch="Lin")
+
+#salvare l'immagine che ho creato come pdf
+pdf("il_mio_primo_pdf_con_R.pdf")
+par(mfrow=c(2,2))
+plotRGB(p224r63_2011,r=3,g=2,b=1,stretch="Lin")
+plotRGB(p224r63_2011,r=4,g=3,b=2,stretch="Lin")
+plotRGB(p224r63_2011,r=3,g=4,b=2,stretch="Lin")
+plotRGB(p224r63_2011,r=3,g=2,b=4,stretch="Lin")
+dev.off()
+
+#funzione histgram stretch -> "tira" molto di più verso il centro
+plotRGB(p224r63_2011,r=3,g=4,b=2,stretch="Lin")
+plotRGB(p224r63_2011,r=3,g=4,b=2,stretch="hist")
+
+#par natural color,false color and false coloor with histgram stretch
+par(mfrow=c(3,1))
+plotRGB(p224r63_2011,r=3,g=2,b=1,stretch="Lin")
+plotRGB(p224r63_2011,r=3,g=4,b=2,stretch="Lin")
+plotRGB(p224r63_2011,r=3,g=4,b=2,stretch="hist")
+#installare i seguenti 2 pacchetti:
+install.packages("RStoolbox")
+library(RStoolbox)
+install.packages("ggplot2")
+library(ggplot2)

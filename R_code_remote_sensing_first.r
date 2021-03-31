@@ -154,3 +154,42 @@ install.packages("RStoolbox")
 library(RStoolbox)
 install.packages("ggplot2")
 library(ggplot2)
+
+#31/03/2021
+#p224r63_1988_masked faccio un confronto temporaneo; multitemporal set
+library(raster)
+setwd("C:/lab/") 
+#ricarico sempre il pacchetto raster e faccio il setwd, se non lo faccio mi da errore 
+p224r63_2011 <- brick("p224r63_2011_masked.grd")
+p224r63_2011
+p224r63_1988 <-brick("p224r63_1988_masked.grd")
+p224r63_1988
+#valori dei pixel diversi perchè è stata presa nel 1988
+#gli altri valori sono uguali
+plot(p224r63_1988)
+#plotRGB
+plotRGB(p224r63_1988, r=3 ,g=2 ,b=1 , stretch="Lin")
+plotRGB(p224r63_1988, r=4 ,g=3 ,b=2 , stretch="Lin")
+
+par(mfrow=c(2,1))
+plotRGB(p224r63_2011,r=4,g=3,b=2,stretch="Lin")
+plotRGB(p224r63_1988, r=4 ,g=3 ,b=2 , stretch="Lin")
+#confronto tra l'immagine 1988 e 2011 con l'infrarosso vicino nella banda del rosso
+
+par(mfrow=c(2,2))
+plotRGB(p224r63_2011,r=4,g=3,b=2,stretch="Lin")
+plotRGB(p224r63_1988, r=4 ,g=3 ,b=2 , stretch="Lin")
+plotRGB(p224r63_2011,r=4,g=3,b=2,stretch="hist")
+plotRGB(p224r63_1988, r=4 ,g=3 ,b=2 , stretch="hist")
+#confronto 2011 e 1988 con lo stretch lin e hist 
+
+pdf("confronto_1988_2011.pdf")
+par(mfrow=c(2,2))
+plotRGB(p224r63_2011,r=4,g=3,b=2,stretch="Lin")
+plotRGB(p224r63_1988, r=4 ,g=3 ,b=2 , stretch="Lin")
+plotRGB(p224r63_2011,r=4,g=3,b=2,stretch="hist")
+plotRGB(p224r63_1988, r=4 ,g=3 ,b=2 , stretch="hist")
+dev.off()
+#creo il mio pdf con il confronto delle immagini 1988 e 2011
+
+

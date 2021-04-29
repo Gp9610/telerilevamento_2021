@@ -97,3 +97,5 @@ plotRGB(TGr,1,2,3,stretch="Lin")
 # se colori blu ho valori alti di lst nel 2010
 plotRGB(TGr,2,3,4,stretch="Lin")
 plotRGB(TGr,4,3,2,stretch="Lin")
+
+install.packages("rasterVis")

@@ -36,8 +36,8 @@ plot(lst_2015)
 #lapply : apllico una certa funzione (raster) a una lista di file
 # list.files R packges -> crea quella lista di files che poi R utilizzerà per applicare la funzione lapply
 # pattern spiega al software quali file ci interessano
-list.files ()
 
+# list f files:
 rlist <- list.files(pattern="lst")
 rlist
 import <- lapply(rlist,raster)
@@ -99,3 +99,42 @@ plotRGB(TGr,2,3,4,stretch="Lin")
 plotRGB(TGr,4,3,2,stretch="Lin")
 
 install.packages("rasterVis")
+
+#09/04/2021
+
+library(rasterVis)
+setwd("C:/lab//greenland")
+# funzione levelplot : come varia la T° nella nostra zona
+levelplot(TGr)
+levelplot(Tgr$lst_2000)
+par(mfrow=c(2,2))
+levelplot(TGr$lst_2000)
+
+cl <- colorRampPalette(c("blue","light blue","pink","red")) (100)
+levelplot(TGr,col.regions=cl)
+#col.regions cambia il colore nel levelplot ed è una gamma di colore molto potente compatto
+# T° di luglio
+#come cambiare i titoli delle immagini
+#attributi 4 (lst_200,lst_2005,lst_2010,lst_2015)
+levelplot(TGr,col.regions=cl, names.attr=c("July 2000", "July 2005", "July 2010", "July 2015"))
+levelplot(TGr,col.regions=cl,main="LST variation in time",names.attr=c("July 2000", "July 2005", "July 2010", "July 2015"))
+# data melt
+#scioglimento dei ghiacciai
+meltlist <- list.files(pattern="melt")
+melt_import <- lapply(meltlist,raster)
+melt<-stack(melt_import)
+levelplot(melt)
+#possiamo andare a vedere il valore dell'immagine del 2007 meno il valore dell'immagine del 1979
+melt_amount <- melt$X2007annual_melt - melt$X1979annual_melt
+# il $ lega il nostro file originale al nostro file interno
+
+clb<- colorRampPalette(c("blue","white","red")) (100)
+plot(melt_amount,col=clb)
+
+levelplot(melt_amount,col.regions=clb)
+
+#installare il pacchetto knitr
+install.packages("knitr")
+
+#14/04/2021
+

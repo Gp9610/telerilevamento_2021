@@ -37,3 +37,6 @@ plot(albedores, col=cl)
 #install.packages("RStoolbox")
 #library(knitr)
 #library(RStoolbox)
+
+
+

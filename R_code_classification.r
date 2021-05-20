@@ -1,5 +1,5 @@
-21/04/2021
-R_code_classification.r
+#21/04/2021
+#R_code_classification.r
 #il processo di classificazione è un processo che accorpa i pixel con valori simili e una volta accoprti questi rappresentano una "classe"
 
 

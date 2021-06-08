@@ -25,7 +25,7 @@ plotRGB(defor2, r=1, g=2, b=3, stretch="lin")
 #tutta la parte rossa è la vegetazione che negli anni si perde e diventa suolo agricolo
 
 #30/04/2021
-library(raster)
+library(raster) #un'alternativa è require(raster)
 # Windows setwd("C:/lab/") 
 defor1 <- brick("defor1.jpg")
 defor2 <- brick("defor2.jpg")
@@ -107,12 +107,22 @@ plot(vi, col=cl)
 vi2 <- spectralIndices(defor2, green = 3, red = 2, nir = 1)
 plot(vi2, col=cl)
 
+#05/05/2021
+install.packages("rasterdiv")
+library(rasterdiv)
+#questo nuovo pacchetto Diversity Indices for Numerical Matrices
+#rasterdiv è stato realizzato per costruire serie di indici di diversità globali basato sulla teoria dell'informazione
+#Il set di dati input è quello del Copernicus Long-Term con dati dal 1999 al 2017 con una media dell indice NDVI di ogni 21 Giugno
+#copNDVI->copernicus NDVI
+setwd("C:/lab/")
+#wordwide NDVI
+copNDVI <- reclassify(copNDVI, cbind(253:255, NA))
+plot(copNDVI)
+#togliere la parte che riguarda l'acqua cbing i valori 253,254 e 255 sono eliminati
+#mappa NDVI a scala globale
+install.packages("rasterVis")
+library(rasterVis)
 
-difndvi <- ndvi1 - ndvi2
-
- 
-
-# dev.off()
-cld <- colorRampPalette(c('blue','white','red'))(100) 
-plot(difndvi, col=cld)
-
+levelplot(copNDVI)
+#situazione di come respira la terra; valori più altri foresta amazzonica ecc... tutto il resto ha valori bassi(es.deserti) 
+#

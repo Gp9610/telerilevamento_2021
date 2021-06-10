@@ -97,5 +97,74 @@ summary(sentpca$model)
 #Standard deviation     77.3362848 53.5145531 5.765599616      0
 #Proportion of Variance  0.6736804  0.3225753 0.003744348      0
 #Cumulative Proportion   0.6736804  0.9962557 1.000000000      1
- #Dunque la prima PCA spiega il 67.36804% dell'informazione originale
+#Dunque la prima PCA spiega il 67.36804% dell'informazione originale
 
+#21/05/2021
+#continuazione codice iniziato il 19/05/2021
+#la prima componente si chiama PC1
+pc1 <- sentpca$map$PC1
+
+#funzione focal-> movie window
+
+pc1sd5 <- focal(pc1, w=matrix(1/25, nrow=5, ncol=5), fun=sd)
+clsd <- colorRampPalette(c('blue','green','pink','magenta','orange','brown','red','yellow'))(100)
+plot(pc1sd5, col=clsd)
+#dall'immagine originale si notano differenze geomorfologiche, la parte blu legata a quelle di prateria di alta quota è più omogenea (blu)
+#aumento di variabilità nei colori rosa e verde-> zone di roccia 
+
+#funzione source-> richiamare un pezzo di codice già realizzato
+#salvare il pezzetto di codice e farlo partire dentro R
+source("source_test_lezione.r")
+
+library(raster)
+library(RStoolbox)
+# install.packages("RStoolbox")
+library(ggplot2) # for ggplot plotting
+library(gridExtra) # for plotting ggplots together
+# install.packages("viridis")
+library(viridis) # for ggplot colouring e serve per mettere direttamente una palette di colori senza citarla direttamente nel codice
+source("source_ggplot.r")
+#cosa c'è dentro source_ggplot.r?:
+#creazione della finestra tramite la funzione ggplot
+#https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html
+#per creare quindi una finestra vuota fare ggplot()
+ggplot() +
+#aggiungiamo il tipo di geometria usando la funzione geom_raster(usando i pixel)
+geom_raster(pc1sd5,mapping=aes(x=x, y=y, fill=layer)) +
+#estetiche: mapping(cosa vogliamo mappare:x,y,valore)
+#alto a sinistra con la dev. standard la vediamo benissimo nell'immagine originata rispetto a quella originale
+#vediamo benissimo dunque le variabilità ecologica, le componenti geomorfologiche 
+scale_fill_viridis()+
+#viridis è la scala di defoult del pacchetto 
+ggtitle("Standard deviation of PC1 by viridis colour scale")
+# metto untitolo al grafico
+
+#metto la leggenda inferno
+ggplot() +
+geom_raster(pc1sd5, mapping = aes(x = x, y = y, fill = layer)) +
+scale_fill_viridis(option="inferno")  +
+ggtitle("Standard deviation of PC1 by inferno colour scale")
+
+
+# associo un oggetto alle varie leggende di colore quali viridis, magma e turbo
+p1 <- ggplot() +
+geom_raster(pc1sd5, mapping = aes(x = x, y = y, fill = layer)) +
+scale_fill_viridis() +
+ggtitle("Standard deviation of PC1 by viridis colour scale")
+
+ 
+p2 <- ggplot() +
+geom_raster(pc1sd5, mapping = aes(x = x, y = y, fill = layer)) +
+scale_fill_viridis(option = "magma") +
+ggtitle("Standard deviation of PC1 by magma colour scale")
+
+ 
+p3 <- ggplot() + 
+geom_raster(pc1sd5, mapping = aes(x = x, y = y, fill = layer)) + 
+scale_fill_viridis(option = "turbo") + 
+ggtitle("Standard deviation of PC1 by turbo colour scale")
+
+grid.arrange(p1, p2, p3, nrow = 1)
+#più grafici in una pagina e deriva dal pacchetto gridExtra
+
+#viridis e magma portano colori contrastati nei valori alti, turbo invece mostra il giallo come valori medi e non è molto indicato per far risaltare qualcosa 

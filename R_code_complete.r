@@ -57,15 +57,16 @@ cls <- colorRampPalette(c("red","pink","orange","purple")) (200)
 plot(p224r63_2011, col=cls)
 
 p224r63_2011
-class      : RasterBrick 
-dimensions : 1499, 2967, 4447533, 7  (nrow, ncol, ncell, nlayers)
-resolution : 30, 30  (x, y)
-extent     : 579765, 668775, -522705, -477735  (xmin, xmax, ymin, ymax)
-crs        : +proj=utm +zone=22 +datum=WGS84 +units=m +no_defs 
-source     : C:/lab/p224r63_2011_masked.grd 
-names      :       B1_sre,       B2_sre,       B3_sre,       B4_sre,       B5_sre,        B6_bt,       B7_sre 
-min values : 0.000000e+00, 0.000000e+00, 0.000000e+00, 1.196277e-02, 4.116526e-03, 2.951000e+02, 0.000000e+00 
-max values :    0.1249041,    0.2563655,    0.2591587,    0.5592193,    0.4894984,  305.2000000,    0.3692634 
+#in questo modo, ossia digitando il nome dell'immagine posso visualizzare tutte le caratterististiche dell'immagine
+#class      : RasterBrick 
+#dimensions : 1499, 2967, 4447533, 7  (nrow, ncol, ncell, nlayers)
+#resolution : 30, 30  (x, y)
+#extent     : 579765, 668775, -522705, -477735  (xmin, xmax, ymin, ymax)
+#crs        : +proj=utm +zone=22 +datum=WGS84 +units=m +no_defs 
+#source     : C:/lab/p224r63_2011_masked.grd 
+#names      :       B1_sre,       B2_sre,       B3_sre,       B4_sre,       B5_sre,        B6_bt,       B7_sre 
+#min values : 0.000000e+00, 0.000000e+00, 0.000000e+00, 1.196277e-02, 4.116526e-03, 2.951000e+02, 0.000000e+00 
+#max values :    0.1249041,    0.2563655,    0.2591587,    0.5592193,    0.4894984,  305.2000000,    0.3692634 
 
 #Bande Landsat
 #B1= Blu
@@ -89,7 +90,7 @@ dev.off()
 
 plot(p224r63_2011$B1_sre)
 plot(p224r63_2011$B2_sre)
-#in questo modo non riesco a mettere le 2 bande vicine allora uso la funzione par che mi definisce come visualissare le immagini
+#in questo modo non riesco a mettere le 2 bande vicine allora uso la funzione par che mi definisce come visualissare le immagini; la funzione par
 par(mfrow=c(1,2))
 #1 riga e 2 colonne
 plot(p224r63_2011$B1_sre)
@@ -108,8 +109,8 @@ plot(p224r63_2011$B3_sre)
 plot(p224r63_2011$B4_sre)
 # 4 bande insieme
 
-# assegno a ogni banda una sua palette di colori
-par(mfrow=c(2,2))
+# assegno a ogni banda una sua palette di colori tramite la funzione colorRampPalette e plotto l'immagine per vedere il risultato
+par(mfrow=c(2,2)) 
 clb <-colorRampPalette(c(" dark blue","blue","light blue")) (100)
 plot(p224r63_2011$B1_sre, col=clb)
 
@@ -183,7 +184,7 @@ p224r63_2011 <- brick("p224r63_2011_masked.grd")
 p224r63_2011
 p224r63_1988 <-brick("p224r63_1988_masked.grd")
 p224r63_1988
-#valori dei pixel diversi perchè è stata presa nel 1988
+#valori dei pixel sono diversi perchè è stata presa nel 1988
 #gli altri valori sono uguali
 plot(p224r63_1988)
 #plotRGB
@@ -258,48 +259,48 @@ rlist <- list.files(pattern="lst")
 rlist
 import <- lapply(rlist,raster)
 import
-[[1]]
-class      : RasterLayer 
-dimensions : 1913, 2315, 4428595  (nrow, ncol, ncell)
-resolution : 1546.869, 1546.898  (x, y)
-extent     : -267676.7, 3313324, -1483987, 1475229  (xmin, xmax, ymin, ymax)
-crs        : +proj=stere +lat_0=90 +lon_0=-33 +k=0.994 +x_0=2000000 +y_0=2000000 +datum=WGS84 +units=m +no_defs 
-source     : C:/lab/Greenland/lst_2000.tif 
-names      : lst_2000 
-values     : 0, 65535  (min, max)
+#[[1]]
+#class      : RasterLayer 
+#dimensions : 1913, 2315, 4428595  (nrow, ncol, ncell)
+#resolution : 1546.869, 1546.898  (x, y)
+#extent     : -267676.7, 3313324, -1483987, 1475229  (xmin, xmax, ymin, ymax)
+#crs        : +proj=stere +lat_0=90 +lon_0=-33 +k=0.994 +x_0=2000000 +y_0=2000000 +datum=WGS84 +units=m +no_defs 
+#source     : C:/lab/Greenland/lst_2000.tif 
+#names      : lst_2000 
+#values     : 0, 65535  (min, max)
 
 
 [[2]]
-class      : RasterLayer 
-dimensions : 1913, 2315, 4428595  (nrow, ncol, ncell)
-resolution : 1546.869, 1546.898  (x, y)
-extent     : -267676.7, 3313324, -1483987, 1475229  (xmin, xmax, ymin, ymax)
-crs        : +proj=stere +lat_0=90 +lon_0=-33 +k=0.994 +x_0=2000000 +y_0=2000000 +datum=WGS84 +units=m +no_defs 
-source     : C:/lab/Greenland/lst_2005.tif 
-names      : lst_2005 
-values     : 0, 65535  (min, max)
+#class      : RasterLayer 
+#dimensions : 1913, 2315, 4428595  (nrow, ncol, ncell)
+#resolution : 1546.869, 1546.898  (x, y)
+#extent     : -267676.7, 3313324, -1483987, 1475229  (xmin, xmax, ymin, ymax)
+#crs        : +proj=stere +lat_0=90 +lon_0=-33 +k=0.994 +x_0=2000000 +y_0=2000000 +datum=WGS84 +units=m +no_defs 
+#source     : C:/lab/Greenland/lst_2005.tif 
+#names      : lst_2005 
+#values     : 0, 65535  (min, max)
 
 
-[[3]]
-class      : RasterLayer 
-dimensions : 1913, 2315, 4428595  (nrow, ncol, ncell)
-resolution : 1546.869, 1546.898  (x, y)
-extent     : -267676.7, 3313324, -1483987, 1475229  (xmin, xmax, ymin, ymax)
-crs        : +proj=stere +lat_0=90 +lon_0=-33 +k=0.994 +x_0=2000000 +y_0=2000000 +datum=WGS84 +units=m +no_defs 
-source     : C:/lab/Greenland/lst_2010.tif 
-names      : lst_2010 
-values     : 0, 65535  (min, max)
+#[[3]]
+#class      : RasterLayer 
+#dimensions : 1913, 2315, 4428595  (nrow, ncol, ncell)
+#resolution : 1546.869, 1546.898  (x, y)
+#extent     : -267676.7, 3313324, -1483987, 1475229  (xmin, xmax, ymin, ymax)
+#crs        : +proj=stere +lat_0=90 +lon_0=-33 +k=0.994 +x_0=2000000 +y_0=2000000 +datum=WGS84 +units=m +no_defs 
+#source     : C:/lab/Greenland/lst_2010.tif 
+#names      : lst_2010 
+#values     : 0, 65535  (min, max)
 
 
-[[4]]
-class      : RasterLayer 
-dimensions : 1913, 2315, 4428595  (nrow, ncol, ncell)
-resolution : 1546.869, 1546.898  (x, y)
-extent     : -267676.7, 3313324, -1483987, 1475229  (xmin, xmax, ymin, ymax)
-crs        : +proj=stere +lat_0=90 +lon_0=-33 +k=0.994 +x_0=2000000 +y_0=2000000 +datum=WGS84 +units=m +no_defs 
-source     : C:/lab/Greenland/lst_2015.tif 
-names      : lst_2015 
-values     : 0, 65535  (min, max)
+#[[4]]
+#class      : RasterLayer 
+#dimensions : 1913, 2315, 4428595  (nrow, ncol, ncell)
+#resolution : 1546.869, 1546.898  (x, y)
+#extent     : -267676.7, 3313324, -1483987, 1475229  (xmin, xmax, ymin, ymax)
+#crs        : +proj=stere +lat_0=90 +lon_0=-33 +k=0.994 +x_0=2000000 +y_0=2000000 +datum=WGS84 +units=m +no_defs 
+#source     : C:/lab/Greenland/lst_2015.tif 
+#names      : lst_2015 
+#values     : 0, 65535  (min, max)
 
 
 #impacchettare dati che sono separati -> funzione stack

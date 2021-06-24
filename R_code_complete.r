@@ -34,9 +34,9 @@ p224r63_2011
 # la funzione brick importa le immagini satellitari
 # p224r63_2011 è l'oggetto
 
-4447533*7
+#4447533*7
 #4447533 è in numero di righe e colonne; 7 è il numero di bande
-[1] 31132731
+#[1] 31132731
 # numero totali di pixel
 
 plot(p224r63_2011)
@@ -273,7 +273,7 @@ import
 #values     : 0, 65535  (min, max)
 
 
-[[2]]
+#[[2]]
 #class      : RasterLayer 
 #dimensions : 1913, 2315, 4428595  (nrow, ncol, ncell)
 #resolution : 1546.869, 1546.898  (x, y)
@@ -682,7 +682,7 @@ library(RStoolbox)
 library(ggplot2)
 library(gridExtra)
 
-setwd("~/lab/")
+setwd("C:/lab/")
 
 p224r63 <- brick("p224r63_2011_masked.grd")
 

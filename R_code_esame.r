@@ -8,34 +8,34 @@ library(RStoolbox)
 library(ggplot2)
 library(gridExtra)
 library(viridis)
-centrale<- brick ("boscocerano.png")
-plot(centrale)
+brindisi<- brick ("Brindisi_Italy_pillars.jpg")
+plot(brindisi)
 
-centrale
+brindisi
 #class      : RasterBrick 
-#dimensions : 892, 1369, 1221148, 3  (nrow, ncol, ncell, nlayers)
+#dimensions : 1223, 1920, 2348160, 3  (nrow, ncol, ncell, nlayers)
 #resolution : 1, 1  (x, y)
-#extent     : 0, 1369, 0, 892  (xmin, xmax, ymin, ymax)
+#extent     : 0, 1920, 0, 1223  (xmin, xmax, ymin, ymax)
 #crs        : NA 
-#source     : C:/lab/boscocerano.png 
-#names      : boscocerano.1, boscocerano.2, boscocerano.3 
-#min values :             0,             0,             0 
-#max values :           255,           255,           255 
+#source     : C:/lab/Brindisi_Italy_pillars.jpg 
+#names      : Brindisi_Italy_pillars.1, Brindisi_Italy_pillars.2, Brindisi_Italy_pillars.3 
+#min values :                        0,                        0,                        0 
+#max values :                      255,                      255,                      255
 
 
 
-plotRGB(centrale, r=1, g=2, b=3, stretch="lin")
-ggRGB(centrale, r=1, g=2, b=3, stretch="lin")
+plotRGB(brindisi, r=1, g=2, b=3, stretch="lin")
+ggRGB(brindisi, r=1, g=2, b=3, stretch="lin")
 #il valore di un pixel di vegetazione sarà: nel blu e nel rosso la pianta assorbe per fare fotosintesi e quindi avrà un valore molto basso
 # nella banda del verde a causa del mesofillo fogliare rifletterà la luce quindi avrà un valore alto
-centralec <- unsuperClass(centrale,nClasses=20)
-plot(centralec$map)
+brindisiusc <- unsuperClass(brindisi,nClasses=20)
+plot(brindisiusc$map)
 
 
 
 
 #different vegetation index
-dvi1 <- centrale$boscocerano.1 - centrale$boscocerano.2
+dvi1 <- brindisi$Brindisi_Italy_pillars.1 - brindisi$Brindisi_Italy_pillars.2
 plot(dvi1)
 cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100)
 plot(dvi1, col=cl)
@@ -44,25 +44,25 @@ plot(dvi1, col=cl, main="DVI ")
 #così abbiamo il modo di visualizzare il DVI appena calcolato
 
 #spectralIndices dove calcoliamo in modo efficiente indici multispettrali come NDVI
-vi <- spectralIndices(centrale, green = 3, red = 2, nir = 1)
+vi <- spectralIndices(brindisi, green = 3, red = 2, nir = 1)
 plot(vi, col=cl)
 
 # calcolo la media nell'indice di vegetazione NDVI
 
 
-centrale_pca <- rasterPCA(centrale)
-summary(centrale_pca$model)
-Importance of components:
-                           Comp.1     Comp.2      Comp.3
-#Standard deviation     67.9068335 13.9495883 5.936837677
-#Proportion of Variance  0.9525245  0.0401950 0.007280472
-#Cumulative Proportion   0.9525245  0.9927195 1.000000000
-plot(centrale_pca$map)
-plotRGB(centrale_pca$map, r=1, g=2, b=3, stretch="lin")
+brindisi_pca <- rasterPCA(brindisi)
+summary(brindisi_pca$model)
+#Importance of components:
+#                           Comp.1      Comp.2      Comp.3
+#Standard deviation     80.3435354 20.28246952 12.50466476
+#Proportion of Variance  0.9191572  0.05857733  0.02226548
+#Cumulative Proportion   0.9191572  0.97773452  1.00000000
+plot(brindisi_pca$map)
+plotRGB(brindisi_pca$map, r=1, g=2, b=3, stretch="lin")
 
-centralepc1 <- centrale_pca$map$PC1
-centralepc1sd5 <- focal(centralepc1, w=matrix(1/25, nrow=5, ncol=5), fun=sd)
+brindisipc1 <- brindisi_pca$map$PC1
+brindisipc1sd <- focal(brindisipc1, w=matrix(1/25, nrow=5, ncol=5), fun=sd)
 clsd <- colorRampPalette(c('blue','green','pink','magenta','orange','brown','red','yellow'))(100)
-plot(centralepc1sd5, col=clsd)
+plot(brindisipc1sd, col=clsd)
 
 

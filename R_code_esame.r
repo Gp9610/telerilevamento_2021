@@ -10,146 +10,217 @@ library(rgdal)
 library(raster)
 setwd("C:/esame/")
 
-oronville1<-brick("oroville_oli_2019155_lrg.jpg")
+#  land cover
+shasta1<-brick("shasta_oli_2019194_lrg.jpg")
 #carico l'immagine con la funzione brick per caricare il set di dati dell'immagine in questione
-oronville1 
+shasta1 
+# shasta1 
 #class      : RasterBrick 
-#dimensions : 3065, 3706, 11358890, 3  (nrow, ncol, ncell, nlayers)
+#dimensions : 1681, 2017, 3390577, 3  (nrow, ncol, ncell, nlayers)
 #resolution : 1, 1  (x, y)
-#extent     : 0, 3706, 0, 3065  (xmin, xmax, ymin, ymax)
+#extent     : 0, 2017, 0, 1681  (xmin, xmax, ymin, ymax)
 #crs        : NA 
-#source     : C:/esame/oroville_oli_2019155_lrg.jpg 
-#names      : oroville_oli_2019155_lrg.1, oroville_oli_2019155_lrg.2, oroville_oli_2019155_lrg.3 
-#min values :                          0,                          0,                          0 
-#max values :                        255,                        255,                        255
-
-plot(oronville1)
-plotRGB(oronville1, r=3,g=2,b=1, stretch="lin")
+#source     : C:/esame/shasta_oli_2019194_lrg.jpg 
+#names      : shasta_oli_2019194_lrg.1, shasta_oli_2019194_lrg.2, shasta_oli_2019194_lrg.3 
+#min values :                        0,                        0,                        0 
+#max values :                      255,                      255,                      255 
+plot(shasta1)
+plotRGB(shasta1, r=3,g=2,b=1, stretch="lin")
 #noto che in rosso sono evidenziati il lago e i vari corsi d'acqua
-
-oronville2 <- brick("oroville_oli_2021160_lrg.jpg")
+shasta2 <- brick("shasta_oli_2021167_lrg.jpg")
+plotRGB(shasta2, r=3,g=2,b=1, stretch="lin")
+# shasta2
 #class      : RasterBrick 
-#dimensions : 3065, 3706, 11358890, 3  (nrow, ncol, ncell, nlayers)
+#dimensions : 1681, 2017, 3390577, 3  (nrow, ncol, ncell, nlayers)
 #resolution : 1, 1  (x, y)
-#extent     : 0, 3706, 0, 3065  (xmin, xmax, ymin, ymax)
+#extent     : 0, 2017, 0, 1681  (xmin, xmax, ymin, ymax)
 #crs        : NA 
-#source     : C:/esame/oroville_oli_2021160_lrg.jpg 
-#names      : oroville_oli_2021160_lrg.1, oroville_oli_2021160_lrg.2, oroville_oli_2021160_lrg.3 
-#min values :                          0,                          0,                          0 
-#max values :                        255,                        255,                        255 
+#source     : C:/esame/shasta_oli_2021167_lrg.jpg 
+#names      : shasta_oli_2021167_lrg.1, shasta_oli_2021167_lrg.2, shasta_oli_2021167_lrg.3 
+#min values :                        0,                        0,                        0 
+#max values :                      255,                      255,                      255 
+
+
 
 
     
 par(mfrow=c(2,1))
-plotRGB(oronville1, r=1, g=2, b=3, stretch="lin")
-plotRGB(oronville2, r=1, g=2, b=3, stretch="lin")
+plotRGB(shasta1, r=1, g=2, b=3, stretch="lin", main= 2019)
+plotRGB(shasta2, r=1, g=2, b=3, stretch="lin",main=2021)
+#confronto tra immagini ggRGB grazie al pacchetto gridExtra
+#grid.arrange plotta le immagini raster
+p1<-ggRGB(shasta1,r=1,g=2,b=3,stretch='lin')
+p2<-ggRGB(shasta2,r=1,g=2,b=3,stretch='lin')
+grid.arrange(p1,p2,nrow=2)  #immagini disposte su 2 righe
+
+#Unsupervised Classification con 2 classi: l'inizio non viene supervisionato da noi, è il programma che prende in modo random i training sites
+shasta1c<-unsuperClass(shasta1,nClasses=2) 
+shasta1c
+#unsuperClass results
+
+#*************** Map ******************
+#$map
+#class      : RasterLayer 
+#dimensions : 1681, 2017, 3390577  (nrow, ncol, ncell)
+#resolution : 1, 1  (x, y)
+#extent     : 0, 2017, 0, 1681  (xmin, xmax, ymin, ymax)
+#crs        : NA 
+#source     : memory
+#names      : layer 
+#values     : 1, 2  (min, max)
+plot(shasta1c$map)# classe 1=suolo nudo, classe 2=vegetazione
+#set.seed(3) #per ottenere sempre lo stesso risultato dalla classificazione
+
+shasta2c<-unsuperClass(shasta2,nClasses=2)
+shasta2c
+#unsuperClass results
+
+#*************** Map ******************
+#$map
+#class      : RasterLayer 
+#dimensions : 1681, 2017, 3390577  (nrow, ncol, ncell)
+#resolution : 1, 1  (x, y)
+#extent     : 0, 2017, 0, 1681  (xmin, xmax, ymin, ymax)
+#crs        : NA 
+#source     : memory
+#names      : layer 
+#values     : 1, 2  (min, max)
+#plot(shasta2c$map) #classe 1=suolo nudo (bianco), classe 2=vegetazione(verde)
+
+#quanto la siccità ha provocato un ritiro delle acque
+#calcolo della frequenza dei pixel di una certa classe. Quanti pixel di una classe e dell' altra classe ci sono?
+#proporzioni delle 2 classi nell'immagine defor1
+freq(shasta1c$map)
+#     value   count
+#[1,]     1  655252 #nell' area di vegetazione
+#[2,]     2 2735325 #suolo nudo
+#proporzione (percentuale) dei pixel nelle 2 classi
+s1<-655252+2735325 
+s1   #[1] 3390577. Questo numero si trova anche in shasta1c
+prop1<-freq(shasta1c$map)/s1
+#> prop1
+#            value     count
+#[1,] 2.949351e-07 0.1932568 19% di suolo nudo
+#[2,] 5.898701e-07 0.8067432 81% della vegetazione
+
+#proporzioni delle 2 classi nell'immagine defor2
+freq(shasta2c$map)
+#     value   count
+#[1,]     1  706788
+#[2,]     2 2683789
+s2<-706788+ 2683789  
+s2   #[1] 3390577
+prop2<-freq(shasta2c$map)/s2
+prop2
+#            value     count
+#[1,] 2.949351e-07 0.2084566 21% di suolo dettato dalla siccità
+#[2,] 5.898701e-07 0.7915434 79% della vegetazione
+
+#generazione di un dataframe (=dataset)
+#1 colonna contenente i fattori: variabili categoriche (suolo nudo e vegetazione). 1 colonna contenente le percentuali nel 2019 e un'altra con le percentualil del 2021 
+#costruisco le colonne che mi interessa avere nel dataframe
+cover<-c('Suolo Nudo','Vegetazione')  #colonna cover contenente due righe. Sono due vettori quindi utilizzo le virgolette e la c  
+percent_2019<-c(19.32,80.67) #colonna contenente i valori percentuali di shasta1 che ricavo da prop1
+percent_2021<-c(20.84,79.15)  #colonna contenente i valori percentuali di shasta2 che ricavo da prop2
+#creo il dataframe con il comando data.frame
+percentages<-data.frame(cover,percent_2019,percent_2021)
+#         cover percent_2019 percent_2021
+# 1 Suolo Nudo        19.32        80.67
+# 2 Vegetazione       20.84        79.15
+
+#ggplot del dataframe (mpg). aes definisce l'estetica: descrive gli assi x e y e color si riferisce in base a quali oggetti vogliamo discriminare 
+#al ggplot si aggiunge il comando geom_bar che crea un istogramma. stat='identify' vuol dire che mantiene i dati così come sono, fill è il colore di riempimento degli istogrammi
+ggplot(percentages,aes(x=cover,y=percent_2019,color=cover))+geom_bar(stat='identity',fill='white')  #istogramma con le percentuali del 2019
+ggplot(percentages,aes(x=cover,y=percent_2021,color=cover))+geom_bar(stat='identity',fill='white')  #istogramma con le percentuali del 2021
+#notiamo a colpo d'occhio che quest'analisi mostra che anche se si è registrata una forte siccità dovuta al non scioglimento dei ghiacciai le percentuali di suolo nudo non sono così elevate, come invece dal confronto delle due immagine si nota subito
+
+p1<-ggplot(percentages,aes(x=cover,y=percent_2019,color=cover))+geom_bar(stat='identity',fill='white')
+p2<-ggplot(percentages,aes(x=cover,y=percent_2021,color=cover))+geom_bar(stat='identity',fill='white')
+grid.arrange(p1, p2, nrow=1) #mettere insieme vari plot del ggplot
+
+######################################################################################################################################à
+# Multivariate Analysis
+# Per fare l'analisi multivariata faccio una list file con le mie due immagini 
+rlist <- list.files(pattern="shasta_oli")
+rlist
+#[1] "shasta_oli_2019194_lrg.jpg" "shasta_oli_2021167_lrg.jpg"
+
+#lapply : applica una funzione su un elenco o un vettore
+import <- lapply(rlist,raster)
+# import
+#[[1]]
+#class      : RasterLayer 
+#band       : 1  (of  3  bands)
+#dimensions : 1681, 2017, 3390577  (nrow, ncol, ncell)
+#resolution : 1, 1  (x, y)
+#extent     : 0, 2017, 0, 1681  (xmin, xmax, ymin, ymax)
+#crs        : NA 
+#source     : C:/esame/shasta_oli_2019194_lrg.jpg 
+#names      : shasta_oli_2019194_lrg 
+#values     : 0, 255  (min, max)
 
 
-dvi1 <- oronville1$oroville_oli_2019155_lrg.1 - oronville1$oroville_oli_2019155_lrg.2
-plot(dvi1)
-#per ogni banda stiamo prendendo il valore dell'infrarosso a cui sottraiamo i valori delle bande del rosso
-cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100)
-plot(dvi1, col=cl)
-#tutta la parte rossa è la vegetazione che negli anni si perde e diventa suolo agricolo
+#[[2]]
+#class      : RasterLayer 
+#band       : 1  (of  3  bands)
+#dimensions : 1681, 2017, 3390577  (nrow, ncol, ncell)
+#resolution : 1, 1  (x, y)
+#extent     : 0, 2017, 0, 1681  (xmin, xmax, ymin, ymax)
+#crs        : NA 
+#source     : C:/esame/shasta_oli_2021167_lrg.jpg 
+#names      : shasta_oli_2021167_lrg 
+#values     : 0, 255  (min, max)
+#stack : impila i vettori da un riquadro dati o da un elenco
+shasta <- stack (import)
+plot (shasta)
+plotRGB(shasta,1,2,3,stretch="Lin")
+#level plot ->Disegna grafici di livello e grafici di contorno.
+levelplot(shasta)
 
-dvi2 <- oronville2$oroville_oli_2021160_lrg.1 - oronville2$oroville_oli_2021160_lrg.2
-plot(dvi2)
-cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100)
-plot(dvi2, col=cl, main="DVI at time 2")
-#notiamo rispetto a defor1 il colore giallo molto più diffiso e ciò sta a significare che la vegetazione è stata distrutta
-#ora con un par vediamo le 2 immagini a confronto
-par(mfrow=c(2,1))
-plot(dvi1, col=cl, main="DVI at time 2019")
-plot(dvi2, col=cl, main="DVI at time 2021")
-#da questo confronto si possono cogliere impattanti differenze di come la vegetazione in soli 2 anni ha iniziato a soffrire
-#allora faccio una differenza per capire nel dettaglio
-difdvi <- dvi1 - dvi2
-cld <- colorRampPalette(c('red','white','black'))(100)
-plot(difdvi, col=cld)
-#colore rosso =soffrenza da parte della vegetazione nel tempo=deforestazione per urbanizzazione, invece notiamo che la parte in bianco è dove la vegetazione non ha subito gravi variazione(infatti siamo sullo 0))
 
-#Ora posso normalizzare tramite il NDVI
-# ndvi1 (NIR-RED) / (NIR+RED)
-ndvi1 <- (oronville1$oroville_oli_2019155_lrg.1 - oronville1$oroville_oli_2019155_lrg.2) / (oronville1$oroville_oli_2019155_lrg.1 + oronville1$oroville_oli_2019155_lrg.2)
-plot(ndvi1, col=cl)
-# ndvi2 (NIR-RED) / (NIR+RED)
-ndvi2 <- (oronville2$oroville_oli_2021160_lrg.1 - oronville2$oroville_oli_2021160_lrg.2) / (oronville2$oroville_oli_2021160_lrg.1 + oronville2$oroville_oli_2021160_lrg.2)
-plot(ndvi2, col=cl)
-# con il confronto del ndvi1 e ndvi2 si nota come la vegetazione sia molto stressata (colore arancio)
+#procedo con l'analisi multivariata
+pairs(shasta)
+#pairs plotta tutte le bande una contro l'altra per vedere la loro correlazione. Mette in correlazione, a 2 a 2, ciascuna banda
+#sulla diagonale ci sono le bande, mentre sulla parte bassa della matrice ci sono i grafici di correlazione.
+#i numeri sulla parte alta della matrice rappresentano l'indice della correlazione (-1<R<+1)
+#vediamo una correlazione di 0.65, quindi sono correlate positivamente
 
-par(mfrow=c(2,1))
-plot(ndvi1, col=cl)
-plot(ndvi2, col=cl)
-
-#Ora prendo le tante bande e riduco il sistema con la PCA
-#PCA è analisi piuttosto impattante , quindi un'idea è quello di ricampionare un nostro dato in modo da renderlo più leggero
-#funzione aggregate per aggregarei i pixel;fact=fattore lineare  di ricampionamento
-
-oronville1res <- aggregate(oronville1, fact=10)
-
-#PCA pricipal component analisys
-#riduce n dimensioni a m dimensioni(numero piùpiccolo ovviamente!)
-oronville1res_pca <- rasterPCA(oronville1res)
- 
-#ora leghiamo($) l'immagine pca al modello che si è creato in uscita insieme alla mappa
-#summary ci serve per fare un sommario del nostro modello
-summary(oronville1res_pca$model)
+#rasterPCA: Principal Component Analysis for Raster
+shasta_pca<-rasterPCA(shasta) #si crea una mappa in uscita e un modello
+summary(shasta_pca$model) #mi visualizza le informazioni relative al modello. Permette di vedere quanta varianza spiegano le componenti.
 #Importance of components:
-#                           Comp.1      Comp.2      Comp.3
-#Standard deviation     86.2126378 16.68272799 7.619837825
-#Proportion of Variance  0.9567028  0.03582361 0.007473545
-#Cumulative Proportion   0.9567028  0.99252645 1.000000000
-#come possiamo vedere la pc1 spiega tutta la varianza del sistema (il 95.67% della varianza)
-#per arrivare al 100% mi ci vogliono tutte le bande 
+                           Comp.1     Comp.2
+#Standard deviation     82.5248997 36.7753106
+#Proportion of Variance  0.8343183  0.1656817
+#Cumulative Proportion   0.8343183  1.0000000
 
-plot(oronville1res_pca$map)
-plotRGB(oronville1res_pca$map, r=1, g=2, b=3, stretch="lin")
-#######faccio la stessa cosa per la seconda immagine#########################à
-oronville2res <- aggregate(oronville2, fact=10)
+plot(shasta_pca$map) #la prima componente PC1 ha molta variabilità e contiene tutta l'informazione (83%)
+shasta_pca
+#$call
+#rasterPCA(img = shasta)
 
-#PCA pricipal component analisys
-#riduce n dimensioni a m dimensioni(numero piùpiccolo ovviamente!)
-oronville2res_pca <- rasterPCA(oronville2res)
- 
-#ora leghiamo($) l'immagine pca al modello che si è creato in uscita insieme alla mappa
-#summary ci serve per fare un sommario del nostro modello
-summary(oronville2res_pca$model)
-#Importance of components:
-#                            Comp.1      Comp.2      Comp.3
-##Standard deviation     126.0999764 19.81927539 6.487891108
-#Proportion of Variance   0.9733782  0.02404513 0.002576669
-#Cumulative Proportion    0.9733782  0.99742333 1.000000000
-#Anche qui la pc1 spiega la maggiore variabilità del sistema (97,33%)
+#$model
+#Call:
+#princomp(cor = spca, covmat = covMat[[1]])
 
-plot(oronville2res_pca$map)
-plotRGB(oronville2res_pca$map, r=1, g=2, b=3, stretch="lin")
-#######################################################################################
-#calcolo la variabilità di questa immagine a singolo strato
-#funzione focal calcola la statistica che ci piace del movie window
-#focal del dato appena creato ;w(window) matrice di 3x3 pixel =9,sd=deviazione standard
-ndvi1sd <- focal(ndvi1, w=matrix(1/9, nrow=3, ncol=3), fun=sd)
-plot(ndvi1sd)
+#Standard deviations:
+#  Comp.1   Comp.2 
+#82.52490 36.77531 
 
-clsd <- colorRampPalette(c('blue','green','pink','magenta','orange','brown','red','yellow'))(100) 
-plot(ndvi1sd, col=clsd) #verde zone da roccia nuda a roccia vegetata, dev.standard molto omogenea 
+# 2  variables and  3390577 observations.
 
-# calcolo la media nell'indice di vegetazione NDVI
+#$map
+#class      : RasterBrick 
+#dimensions : 1681, 2017, 3390577, 2  (nrow, ncol, ncell, nlayers)
+#resolution : 1, 1  (x, y)
+#extent     : 0, 2017, 0, 1681  (xmin, xmax, ymin, ymax)
+#crs        : NA 
+#source     : memory
+#names      :        PC1,        PC2 
+#min values :  -93.83337, -149.78608 
+#max values :   262.0481,   198.5099 
 
-ndvi1mean <- focal(ndvi1, w=matrix(1/9, nrow=3, ncol=3), fun=mean)
-clsd <- colorRampPalette(c('blue','green','pink','magenta','orange','brown','red','yellow'))(100) 
-plot(ndvi1mean, col=clsd) # valori bassi per la roccia nuda 
-##########faccio la stessa cosa con la seconda immagine##############à
-ndvi2sd <- focal(ndvi2, w=matrix(1/9, nrow=3, ncol=3), fun=sd)
-plot(ndvi2sd)
+#plotRGB delle 3 componenti principali della mappa risultante dalla PCA. E' l'analisi risultante dalle componenti principali
+plotRGB(shasta_pca$map,r=1,g=2,b=3,stretch='lin')  #colori legati alle 3 componenti, non danno molto informazioni
 
-clsd <- colorRampPalette(c('blue','green','pink','magenta','orange','brown','red','yellow'))(100) 
-plot(ndvi2sd, col=clsd) #verde zone da roccia nuda a roccia vegetata, dev.standard molto omogenea 
-
-# calcolo la media nell'indice di vegetazione NDVI
-
-ndvi2mean <- focal(ndvi2, w=matrix(1/9, nrow=3, ncol=3), fun=mean)
-clsd <- colorRampPalette(c('blue','green','pink','magenta','orange','brown','red','yellow'))(100) 
-plot(ndvi2mean, col=clsd) # valori bassi per la roccia nuda 
-
-#firme spettrali
-click(oronville1, id=T, xy=T, cell=T, type="p", pch=16, col="yellow")
+str(shasta_pca) #da informazioni complete sul file

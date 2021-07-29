@@ -1,12 +1,15 @@
 #R_code_esame.r
-
+#Appena quattro anni dopo essere emersa da una grave siccità pluriennale, la California è tornata in
+#condizioni di siccità che non si vedevano dal 1976-77. La prova della nuova siccità risalta nelle
+#immagini satellitari di uno dei due più grandi serbatoi dello stato: Shasta Lake.
+#Le immagini sono state acquisite dall'Operational Land Imager (OLI) su Landsat 8, mostrano il
+#lago Shasta quest'anno e nel giugno 2019 (condizioni più tipiche).
 
 
 
 library(RStoolbox)
 library(ggplot2)
 library(gridExtra)
-library(rgdal)
 library(raster)
 setwd("C:/esame/")
 
@@ -69,7 +72,7 @@ shasta1c
 #names      : layer 
 #values     : 1, 2  (min, max)
 plot(shasta1c$map)# classe 1=suolo nudo, classe 2=vegetazione
-#set.seed(3) #per ottenere sempre lo stesso risultato dalla classificazione
+
 
 shasta2c<-unsuperClass(shasta2,nClasses=2)
 shasta2c
@@ -103,7 +106,7 @@ prop1<-freq(shasta1c$map)/s1
 #[1,] 2.949351e-07 0.1932568 19% di suolo nudo
 #[2,] 5.898701e-07 0.8067432 81% della vegetazione
 
-#proporzioni delle 2 classi nell'immagine defor2
+#proporzioni delle 2 classi nell'immagine shasta2c
 freq(shasta2c$map)
 #     value   count
 #[1,]     1  706788
@@ -140,7 +143,7 @@ grid.arrange(p1, p2, nrow=1) #mettere insieme vari plot del ggplot
 
 ######################################################################################################################################à
 # Multivariate Analysis
-# Per fare l'analisi multivariata faccio una list file con le mie due immagini 
+# Per fare l'analisi multivariata faccio una list.file con le mie due immagini 
 rlist <- list.files(pattern="shasta_oli")
 rlist
 #[1] "shasta_oli_2019194_lrg.jpg" "shasta_oli_2021167_lrg.jpg"

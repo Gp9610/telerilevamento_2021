@@ -167,7 +167,7 @@ dev.off()
 plotRGB(p224r63_2011,r=3,g=4,b=2,stretch="Lin")
 plotRGB(p224r63_2011,r=3,g=4,b=2,stretch="hist")
 
-#par natural color,false color and false coloor with histgram stretch
+#par natural color,false color and false color with histgram stretch
 par(mfrow=c(3,1))
 plotRGB(p224r63_2011,r=3,g=2,b=1,stretch="Lin")
 plotRGB(p224r63_2011,r=3,g=4,b=2,stretch="Lin")
@@ -225,7 +225,7 @@ dev.off()
 # install.packages("raster")
 library(raster)
 # Per windows setwd("C:/lab/greenland") 
-setwd("C:/lab/greenland") setwd("C:/lab/greenland") 
+setwd("C:/lab/greenland") 
 # 07/04/2021 
 # Oggi vedremo come importare un blocco di dati multitemporali tutti insieme in modo da creare lo "stack"
 # Lo Stack è un insieme di dati multitemporali raster 
@@ -253,7 +253,7 @@ plot(lst_2010)
 plot(lst_2015)
 
 #nuova funzione:lapply
-#lapply : apllico una certa funzione (raster) a una lista di file
+#lapply : aplico una certa funzione (raster) a una lista di file
 # list.files R packges -> crea quella lista di files che poi R utilizzerà per applicare la funzione lapply
 # pattern spiega al software quali file ci interessano
 
@@ -388,7 +388,7 @@ plot(albedo,col=cl)
 #per aggregare i nostri pixel-> aggregate: immagine con i pixel
 #maggiore è il numero dei pixel maggiore è il peso dell'immagine
 #prendo un pixel più grande ed estraggo la media dei valori all' interno-> 
-# trasformo la mia immagine di n pixel a un nemro inferiore di pixel
+# trasformo la mia immagine di n pixel a un numemro inferiore di pixel
 #fattore "fact" diminuiso linermente i pixel (100x100pixel=1pixel)
 #è un ricampiomento bi-lineare
 albedores <- aggregate(albedo, fact=100)
@@ -494,7 +494,7 @@ plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="lin")
 plotRGB(p224r63_2011res, r=4, g=3, b=2, stretch="lin")
  
 #PCA pricipal component analisys
-#riduce n dimensioni a m dimensioni(numero piùpiccolo ovviamente!)
+#riduce n dimensioni a m dimensioni(numero più piccolo ovviamente!)
 p224r63_2011res_pca <- rasterPCA(p224r63_2011res)
  
 #ora leghiamo($) l'immagine pca al modello che si è creato in uscita insieme alla mappa
@@ -600,14 +600,14 @@ so
 plotRGB(so, 1,2,3,stretch="lin")
 
 # come fa il software a classificare l'immagine?
-# all'interno della nostra immagine una volta montata in RGB noi abbiamo ad esempio un pixel di boisco e i pixel li vediamo nella banda del blu, del verde e del rosso
+# all'interno della nostra immagine una volta montata in RGB noi abbiamo ad esempio un pixel di bosco e i pixel li vediamo nella banda del blu, del verde e del rosso
 # il valore di un pixel di vegetazione sarà: nel blu e nel rosso la pianta assorbe per fare fotosintesi e quindi avrà un valore molto basso
-# nella banda del verde a causa del mesofillo fogliare rifletterà la luve quindi avrà un valore alto
+# nella banda del verde a causa del mesofillo fogliare rifletterà la luce quindi avrà un valore alto
 # incrociando i valori delle 3 bande avremo un certo pixel e così via...
 # creazioni di classi da pixel campione nello spazio multi-spettrale dove gli assi sono le bande
 # il software andrà a classificare tutti gli altri pixel dell'immagine come funzione del training-set che si è creato
 # processo chiamato di somiglianza massima
-# in questo caso ilsoftware tira fuori direttamente il training set
+# in questo caso il software tira fuori direttamente il training set
 # classificazione non supervisionata: non c'è un impatto dell'utente nel definire a monte le classi
 # unsupervised classification
 # funzione UnsuperClass opera la classificazione non supervisionata
@@ -775,7 +775,7 @@ dvi2 <- defor2$defor2.1 - defor2$defor2.2
 plot(dvi2)
 cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100)
 plot(dvi2, col=cl, main="DVI at time 2")
-#notiamo rispetto a defor1 il colore giallo molto più diffiso e ciò sta a significare che la vegetazione è stata distrutta
+#notiamo rispetto a defor1 il colore giallo molto più diffuso e ciò sta a significare che la vegetazione è stata distrutta
 #ora con un par vediamo le 2 immagini a confronto
 par(mfrow=c(2,1))
 plot(dvi1, col=cl, main="DVI at time 1")

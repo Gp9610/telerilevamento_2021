@@ -224,3 +224,6 @@ shasta_pca
 plotRGB(shasta_pca$map,r=1,g=2,b=3,stretch='lin')  #colori legati alle 3 componenti, non danno molto informazioni
 
 str(shasta_pca) #da informazioni complete sul file
+
+
+

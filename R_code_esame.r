@@ -180,8 +180,9 @@ plot (shasta)
 plotRGB(shasta,1,2,3,stretch="Lin")
 #level plot ->Disegna grafici di livello e grafici di contorno.
 levelplot(shasta)
-
-
+shasta_diff <- shasta$shasta_oli_2019194_lrg  - shasta$shasta_oli_2021167_lrg 
+clb<- colorRampPalette(c("blue","white","red")) (100)
+plot(shasta_diff,col=clb)
 #procedo con l'analisi multivariata
 pairs(shasta)
 #pairs plotta tutte le bande una contro l'altra per vedere la loro correlazione. Mette in correlazione, a 2 a 2, ciascuna banda
@@ -225,7 +226,7 @@ shasta_pca
 #max values :   262.0481,   198.5099 
 
 #plotRGB delle 3 componenti principali della mappa risultante dalla PCA. E' l'analisi risultante dalle componenti principali
-plotRGB(shasta_pca$map,r=1,g=2,b=3,stretch='lin')  #colori legati alle 3 componenti, non danno molto informazioni
+plotRGB(shasta_pca$map,r=1,g=2,b=3,stretch='lin')  #colori legati alle 3 componenti, è evidente come il colore rosso evidenzia il suolo nudo dovuto alla siccità.
 
 str(shasta_pca) #da informazioni complete sul file
 

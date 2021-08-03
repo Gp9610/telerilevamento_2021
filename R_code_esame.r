@@ -8,6 +8,7 @@
 
 
 library(RStoolbox)
+library(rasterVis)
 library(ggplot2)
 library(gridExtra)
 library(raster)

@@ -180,9 +180,12 @@ plot (shasta)
 plotRGB(shasta,1,2,3,stretch="Lin")
 #level plot ->Disegna grafici di livello e grafici di contorno.
 levelplot(shasta)
-shasta_diff <- shasta$shasta_oli_2019194_lrg  - shasta$shasta_oli_2021167_lrg 
+
+shasta_diff <- shasta$shasta_oli_2021167_lrg   - shasta$ shasta_oli_2019194_lrg
 clb<- colorRampPalette(c("blue","white","red")) (100)
 plot(shasta_diff,col=clb)
+
+
 #procedo con l'analisi multivariata
 pairs(shasta)
 #pairs plotta tutte le bande una contro l'altra per vedere la loro correlazione. Mette in correlazione, a 2 a 2, ciascuna banda

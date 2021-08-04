@@ -232,6 +232,3 @@ shasta_pca
 plotRGB(shasta_pca$map,r=1,g=2,b=3,stretch='lin')  #colori legati alle 3 componenti, è evidente come il colore rosso evidenzia il suolo nudo dovuto alla siccità.
 
 str(shasta_pca) #da informazioni complete sul file
-
-
-

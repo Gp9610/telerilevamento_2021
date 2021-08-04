@@ -4,7 +4,7 @@
 #immagini satellitari di uno dei due più grandi serbatoi dello stato: Shasta Lake.
 #Le immagini sono state acquisite dall'Operational Land Imager (OLI) su Landsat 8, mostrano il
 #lago Shasta quest'anno e nel giugno 2019 (condizioni più tipiche).
-
+#https://landsat.visibleearth.nasa.gov/view.php?id=148447
 
 
 library(RStoolbox)

@@ -49,8 +49,8 @@ plotRGB(shasta2, r=3,g=2,b=1, stretch="lin")
 
     
 par(mfrow=c(2,1))
-plotRGB(shasta1, r=1, g=2, b=3, stretch="lin", main= 2019)
-plotRGB(shasta2, r=1, g=2, b=3, stretch="lin",main=2021)
+plotRGB(shasta1, r=1, g=2, b=3, stretch="lin", main= "2019")
+plotRGB(shasta2, r=1, g=2, b=3, stretch="lin",main="2021")
 #confronto tra immagini ggRGB grazie al pacchetto gridExtra
 #grid.arrange plotta le immagini raster
 p1<-ggRGB(shasta1,r=1,g=2,b=3,stretch='lin')
@@ -89,7 +89,11 @@ shasta2c
 #source     : memory
 #names      : layer 
 #values     : 1, 2  (min, max)
-#plot(shasta2c$map) #classe 1=suolo nudo (bianco), classe 2=vegetazione(verde)
+plot(shasta2c$map) #classe 1=suolo nudo (bianco), classe 2=vegetazione(verde)
+
+par(mfrow=c(1,2))
+plot(shasta1c$map)
+plot(shasta2c$map)
 
 #quanto la siccità ha provocato un ritiro delle acque
 #calcolo della frequenza dei pixel di una certa classe. Quanti pixel di una classe e dell' altra classe ci sono?
@@ -197,7 +201,7 @@ pairs(shasta)
 shasta_pca<-rasterPCA(shasta) #si crea una mappa in uscita e un modello
 summary(shasta_pca$model) #mi visualizza le informazioni relative al modello. Permette di vedere quanta varianza spiegano le componenti.
 #Importance of components:
-                           Comp.1     Comp.2
+#                           Comp.1     Comp.2
 #Standard deviation     82.5248997 36.7753106
 #Proportion of Variance  0.8343183  0.1656817
 #Cumulative Proportion   0.8343183  1.0000000

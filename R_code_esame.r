@@ -48,7 +48,7 @@ plotRGB(shasta2, r=3,g=2,b=1, stretch="lin")
 
 
     
-par(mfrow=c(2,1))
+par(mfrow=c(1,2))
 plotRGB(shasta1, r=1, g=2, b=3, stretch="lin", main= "2019")
 plotRGB(shasta2, r=1, g=2, b=3, stretch="lin",main="2021")
 #confronto tra immagini ggRGB grazie al pacchetto gridExtra
@@ -148,91 +148,50 @@ grid.arrange(p1, p2, nrow=1) #mettere insieme vari plot del ggplot
 
 ######################################################################################################################################à
 # Multivariate Analysis
-# Per fare l'analisi multivariata faccio una list.file con le mie due immagini 
-rlist <- list.files(pattern="shasta_oli")
-rlist
-#[1] "shasta_oli_2019194_lrg.jpg" "shasta_oli_2021167_lrg.jpg"
+#pairs è una funzione diretta e plotta tutte le combinazione possibili delle variabili
+#indice di correlazione(indice di Pearson) varia da -1 a 1 : correlati positivamente valore 1; correlati negativamente -
 
-#lapply : applica una funzione su un elenco o un vettore
-import <- lapply(rlist,raster)
-# import
-#[[1]]
-#class      : RasterLayer 
-#band       : 1  (of  3  bands)
-#dimensions : 1681, 2017, 3390577  (nrow, ncol, ncell)
-#resolution : 1, 1  (x, y)
-#extent     : 0, 2017, 0, 1681  (xmin, xmax, ymin, ymax)
-#crs        : NA 
-#source     : C:/esame/shasta_oli_2019194_lrg.jpg 
-#names      : shasta_oli_2019194_lrg 
-#values     : 0, 255  (min, max)
-
-
-#[[2]]
-#class      : RasterLayer 
-#band       : 1  (of  3  bands)
-#dimensions : 1681, 2017, 3390577  (nrow, ncol, ncell)
-#resolution : 1, 1  (x, y)
-#extent     : 0, 2017, 0, 1681  (xmin, xmax, ymin, ymax)
-#crs        : NA 
-#source     : C:/esame/shasta_oli_2021167_lrg.jpg 
-#names      : shasta_oli_2021167_lrg 
-#values     : 0, 255  (min, max)
-#stack : impila i vettori da un riquadro dati o da un elenco
-shasta <- stack (import)
-plot (shasta)
-plotRGB(shasta,1,2,3,stretch="Lin")
-#level plot ->Disegna grafici di livello e grafici di contorno.
-levelplot(shasta)
-
-shasta_diff <- shasta$shasta_oli_2021167_lrg   - shasta$ shasta_oli_2019194_lrg
-clb<- colorRampPalette(c("blue","white","red")) (100)
-plot(shasta_diff,col=clb)
-
-
-#procedo con l'analisi multivariata
-pairs(shasta)
-#pairs plotta tutte le bande una contro l'altra per vedere la loro correlazione. Mette in correlazione, a 2 a 2, ciascuna banda
-#sulla diagonale ci sono le bande, mentre sulla parte bassa della matrice ci sono i grafici di correlazione.
-#i numeri sulla parte alta della matrice rappresentano l'indice della correlazione (-1<R<+1)
-#vediamo una correlazione di 0.65, quindi sono correlate positivamente
-
-#rasterPCA: Principal Component Analysis for Raster
-shasta_pca<-rasterPCA(shasta) #si crea una mappa in uscita e un modello
-summary(shasta_pca$model) #mi visualizza le informazioni relative al modello. Permette di vedere quanta varianza spiegano le componenti.
+pairs(shasta1)
+#vediamo che la banda del blu e del verde sono correlate in modo molto forte con indice di Person pari a 0.94 per le bande dell'immagine del 2019
+#la pc1 spiega tutta la varianza del sistema (il 94% della varianza)
+#per arrivare al 100% mi ci vogliono tutte le bande 
+#con le prime 3 bande spiego tutta la variabilità possibile
+pairs(shasta2)
+#vediamo che la banda del blu e del verde sono correlate in modo molto forte con indice di Person pari a 0.94 per le bande dell'immagine del 2021
+shasta1_pca<-rasterPCA(shasta1)
+summary(shasta1_pca$model)
 #Importance of components:
-#                           Comp.1     Comp.2
-#Standard deviation     82.5248997 36.7753106
-#Proportion of Variance  0.8343183  0.1656817
-#Cumulative Proportion   0.8343183  1.0000000
+#                          Comp.1      Comp.2      Comp.3
+#Standard deviation     72.8708129 15.49184619 6.569193764
+#Proportion of Variance  0.9493767  0.04290794 0.007715347
+#Cumulative Proportion   0.9493767  0.99228465 1.000000000
+plot(shasta1_pca$map)
 
-plot(shasta_pca$map) #la prima componente PC1 ha molta variabilità e contiene tutta l'informazione (83%)
-shasta_pca
-#$call
-#rasterPCA(img = shasta)
+shasta2_pca<-rasterPCA(shasta2)
+summary(shasta2_pca$model)
+#Importance of components:
+#                          Comp.1      Comp.2      Comp.3
+#Standard deviation     95.682841 20.37762526 7.315502912
+#Proportion of Variance  0.951292  0.04314722 0.005560759
+#Cumulative Proportion   0.951292  0.99443924 1.000000000 
+plot(shasta2_pca$map)
 
-#$model
-#Call:
-#princomp(cor = spca, covmat = covMat[[1]])
+par(mfrow=c(1,2))
+plotRGB(shasta1_pca$map, r=1, g=2, b=3, stretch="lin")
+plotRGB(shasta2_pca$map, r=1, g=2, b=3, stretch="lin")
+#Uso solo la PC1 perchè mi spiega il 94% di variabilità, ovviamente il 6% lo perdo.
+#avendo la variabilità maggiore la prima componente (pc1) in entramebe le immagini mi concentro sulla variabilità della prima banda della pca di shasta1 e shasta2
+#deviazione standaed dell'immagine shasta 1
+pc1 <- shasta1_pca$map$PC1
+pc1sd <- focal(shasta1_pca$map$PC1, w=matrix(1/9, nrow=3, ncol=3), fun=sd)
+plot(pc1sd)
+#deviazione standaed dell'immagine shasta 2 
+PC1 <- shasta2_pca$map$PC1
+PC1sd <- focal(shasta1_pca$map$PC1, w=matrix(1/9, nrow=3, ncol=3), fun=sd)
+plot(PC1sd)
 
-#Standard deviations:
-#  Comp.1   Comp.2 
-#82.52490 36.77531 
+par(mfrow=c(1,2))
+plot(pc1sd)
+plot(PC1sd)
 
-# 2  variables and  3390577 observations.
 
-#$map
-#class      : RasterBrick 
-#dimensions : 1681, 2017, 3390577, 2  (nrow, ncol, ncell, nlayers)
-#resolution : 1, 1  (x, y)
-#extent     : 0, 2017, 0, 1681  (xmin, xmax, ymin, ymax)
-#crs        : NA 
-#source     : memory
-#names      :        PC1,        PC2 
-#min values :  -93.83337, -149.78608 
-#max values :   262.0481,   198.5099 
-
-#plotRGB delle 3 componenti principali della mappa risultante dalla PCA. E' l'analisi risultante dalle componenti principali
-plotRGB(shasta_pca$map,r=1,g=2,b=3,stretch='lin')  #colori legati alle 3 componenti, è evidente come il colore rosso evidenzia il suolo nudo dovuto alla siccità.
-
-str(shasta_pca) #da informazioni complete sul file

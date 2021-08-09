@@ -179,19 +179,5 @@ plot(shasta2_pca$map)
 par(mfrow=c(1,2))
 plotRGB(shasta1_pca$map, r=1, g=2, b=3, stretch="lin")
 plotRGB(shasta2_pca$map, r=1, g=2, b=3, stretch="lin")
-#Uso solo la PC1 perchè mi spiega il 94% di variabilità, ovviamente il 6% lo perdo.
-#avendo la variabilità maggiore la prima componente (pc1) in entramebe le immagini mi concentro sulla variabilità della prima banda della pca di shasta1 e shasta2
-#deviazione standaed dell'immagine shasta 1
-pc1 <- shasta1_pca$map$PC1
-pc1sd <- focal(shasta1_pca$map$PC1, w=matrix(1/9, nrow=3, ncol=3), fun=sd)
-plot(pc1sd)
-#deviazione standaed dell'immagine shasta 2 
-PC1 <- shasta2_pca$map$PC1
-PC1sd <- focal(shasta1_pca$map$PC1, w=matrix(1/9, nrow=3, ncol=3), fun=sd)
-plot(PC1sd)
-
-par(mfrow=c(1,2))
-plot(pc1sd)
-plot(PC1sd)
 
 

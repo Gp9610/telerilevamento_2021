@@ -97,7 +97,7 @@ plot(shasta2c$map)
 
 #quanto la siccità ha provocato un ritiro delle acque
 #calcolo della frequenza dei pixel di una certa classe. Quanti pixel di una classe e dell' altra classe ci sono?
-#proporzioni delle 2 classi nell'immagine defor1
+#proporzioni delle 2 classi nell'immagine shasta1c
 freq(shasta1c$map)
 #     value   count
 #[1,]     1  655252 #nell' area di vegetazione
@@ -123,6 +123,8 @@ prop2
 #            value     count
 #[1,] 2.949351e-07 0.2084566 21% di suolo dettato dalla siccità
 #[2,] 5.898701e-07 0.7915434 79% della vegetazione
+
+#la percentuale di suolo nudo è aumentata dal 2019 al 2021 del 2%
 
 #generazione di un dataframe (=dataset)
 #1 colonna contenente i fattori: variabili categoriche (suolo nudo e vegetazione). 1 colonna contenente le percentuali nel 2019 e un'altra con le percentualil del 2021 
@@ -166,6 +168,7 @@ summary(shasta1_pca$model)
 #Proportion of Variance  0.9493767  0.04290794 0.007715347
 #Cumulative Proportion   0.9493767  0.99228465 1.000000000
 plot(shasta1_pca$map)
+#94% della variabilità contenuta nella prima componente
 
 shasta2_pca<-rasterPCA(shasta2)
 summary(shasta2_pca$model)
@@ -175,6 +178,7 @@ summary(shasta2_pca$model)
 #Proportion of Variance  0.951292  0.04314722 0.005560759
 #Cumulative Proportion   0.951292  0.99443924 1.000000000 
 plot(shasta2_pca$map)
+#95% della variabilità contenuta nella prima componente
 
 par(mfrow=c(1,2))
 plotRGB(shasta1_pca$map, r=1, g=2, b=3, stretch="lin")
